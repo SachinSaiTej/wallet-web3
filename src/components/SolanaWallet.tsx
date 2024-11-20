@@ -19,6 +19,7 @@ const SolanaWallet = ({ mnemonic }: { mnemonic: string }) => {
 
   const fetchDetailsForTheAccount = async (publicKey: string) => {
     try {
+        setBalance(0);
       const { data } = await axios.post(`https://api.devnet.solana.com/`, {
         jsonrpc: "2.0",
         id: 1,
@@ -28,6 +29,13 @@ const SolanaWallet = ({ mnemonic }: { mnemonic: string }) => {
         // params: ["6fTbxBg15sAfWFzpYYpk37iqPXboD2czi8ZaaWSCv4qu"],
       });
       console.log(data);
+      console.log(`${publicKey} has ${balance} SOL`);
+      if(data.result.value) {
+          setBalance(data.result.value.lamports * 10**-9);
+      }
+
+      alert(`${publicKey} has ${balance} SOL`);
+
     } catch (error) {
       console.error(error);
     }
